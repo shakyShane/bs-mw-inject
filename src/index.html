@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset='utf-8'>
+<title>BrowserSync Middleware Injection</title>
+<link rel='stylesheet' href='main.less'>
+<body>
+<h1>BrowserSync Middleware Injection</h1>
+<p>
+    This demo was created with the intent to allow BrowserSync
+    to be able to inject CSS changes when the response returned
+    has a content-type of `text/css`, instead of reloading
+    the browser.
+</p>
+<p>
+    Here a LESS file will be loaded and compiled to CSS before
+    being served as CSS. However, this should work for any CSS
+    pre-process such as SASS, Stylus, etc.
+</p>
+<p>
+   This page tests 2 different CSS files being loaded in the head
+   and another deferred, injected through Javascript.
+</p>
+<script>
+    window.onload = function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'deferred.less';
+        document.head.appendChild(link);
+   };
+</script>
