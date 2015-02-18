@@ -1,4 +1,4 @@
-/*global module, require*/
+var url = require("url");
 
 function less(src) {
     var f = require('fs').readFileSync('src/' + src).toString();
@@ -7,15 +7,15 @@ function less(src) {
 
 module.exports = {
     files: ['src/*.less'],
-    server: {
-        baseDir: 'src',
-        middleware: function (req, res, next) {
-            if (req.url.match(/\.less$/)) {
-                less(req.url).then(function (o) {
-                    res.setHeader('Content-Type', 'text/css');
-                    res.end(o.css);
-                });
-            } else { next(); }
-        }
+    injectFileTypes: ["less"],
+    server: 'src',
+    middleware: function (req, res, next) {
+        var parsed = require("url").parse(req.url);
+        if (parsed.pathname.match(/\.less$/)) {
+            less(parsed.pathname).then(function (o) {
+                res.setHeader('Content-Type', 'text/css');
+                res.end(o.css);
+            });
+        } else { next(); }
     }
 };
